@@ -7,9 +7,8 @@
 Analyze how market sentiment (Fear/Greed) relates to trader behavior and performance on Hyperliquid to uncover patterns for smarter trading.
 
 ## Structure
-- `data.py`: The main data processing and analysis notebook.
-- `summary.md`: Key insights and strategic recommendations.
-- `charts/`: Visualizations supporting the analysis.
+- `dataScienceProject.ipynb`: The main data processing and analysis notebook.
+- `Readme.md`: Key insights and strategic recommendations.
 
 ## Key Findings
 - Market sentiment significantly impacts win rates, with Extreme Greed showing the highest success ($58.7\%$).
