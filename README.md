@@ -1,35 +1,48 @@
 # DataScienceProject
-Market Sentiment vs. Trader Behavior: Analysis Report
-Methodology
-The analysis was conducted by integrating two key datasets:
+## Summary & Strategy Recommendations
 
-Bitcoin Fear & Greed Index: A daily sentiment score (0-100) and classification.
-Hyperliquid Trader Data: Historical trade executions, leverage, and PnL.
-Data was aligned at a daily level. Key metrics calculated include:
+# Hyperliquid Sentiment Analysis Project
 
-Daily PnL per trader segment.
-Win rate grouped by sentiment classification.
-Leverage distribution patterns.
-Trade frequency relative to market volatility and sentiment.
-Key Insights
-1. The "Fear Trap"
-During Extreme Fear and Fear days, high-leverage traders (>20x) exhibited a significantly higher failure rate (Win rate ~37%). Conversely, low-leverage traders remained relatively stable, suggesting that volatility in fear-based markets disproportionately affects over-leveraged accounts.
+## Project Goal
+Analyze how market sentiment (Fear/Greed) relates to trader behavior and performance on Hyperliquid to uncover patterns for smarter trading.
 
-2. "Greed" Performance
-On Greed days, the overall win rate increased to over 70%, but the average PnL was paradoxically lower per trade. This suggests that while more trades are profitable, traders may be "picking up pennies in front of a steamroller," taking many small wins while risking large drawdowns.
+## Structure
+- `data.py`: The main data processing and analysis notebook.
+- `summary.md`: Key insights and strategic recommendations.
+- `charts/`: Visualizations supporting the analysis.
 
-3. Sentiment-Driven Leverage
-Traders tend to increase leverage as sentiment moves from Neutral to Greed. However, the highest profitability was found in the Neutral segment where traders were more selective and used moderate leverage (10-20x).
+## Key Findings
+- Market sentiment significantly impacts win rates, with Extreme Greed showing the highest success ($58.7\%$).
+- High-leverage traders experience extreme volatility during Fear cycles.
+- Frequent trading in Greed environments yields higher median PnL but requires strict risk management.
 
-Strategy Recommendations
-Rule 1: The Fear Cap
-During Fear/Extreme Fear days: Mandate a maximum leverage cap of 5x. Historical data shows that the probability of liquidation increases by 300% when sentiment is below 20.
+# Trading Behavior & Sentiment Summary
 
-Rule 2: Greed Selectivity
-During Greed/Extreme Greed days: Reduce trade frequency. While the market is trending, the "noise" increases. Focus on high-conviction trend-following positions with wider stops to avoid getting wicked out by late-stage greed volatility.
+## Insights
 
-Setup and Running the Analysis
-Install dependencies: npm install
-Run database setup: npm run db:push
-Start the application: npm run dev
-Access the dashboard at http://localhost:5000 to view the live charts and insights.
+### 1. The Leverage Trap in Fearful Markets
+High-risk/size traders show massive PnL volatility during "Fear" days. While they occasionally hit big wins, the standard deviation of their PnL is over $130x$ higher than low-risk traders ($304,757$ vs $2,339$).
+- **Evidence**: See `charts/insight1_volatility.png`.
+- **Table**:
+| Risk Bucket | Avg Win Rate | PnL Volatility |
+|-------------|--------------|----------------|
+| Low Risk    | 33.9%        | 2,339          |
+| High Risk   | 45.9%        | 304,757        |
+
+### 2. Frequency Alpha in Greed
+During Greed phases, frequent traders maintain a significantly higher median PnL ($670$) compared to infrequent traders ($5.3$). This suggests that momentum-based high-frequency strategies are more effective when the market sentiment is bullish.
+- **Evidence**: See `charts/insight2_median_pnl.png`.
+
+### 3. Consistency vs. Market Noise
+Consistent traders (those with low PnL variance per coin) maintain positive PnL across almost all sentiment categories, whereas Inconsistent traders suffer from wild swings, especially in "Fear" and "Greed" where their PnL volatility explodes.
+- **Evidence**: See `charts/insight3_consistency.png`.
+
+## Strategy Recommendations
+
+### Rule 1: The "Neutral" Filter
+Since win rates drop to their lowest ($20.2\%$) during Neutral sentiment phases, the strategy should be to **halve trade size or sit out** until the Fear/Greed index moves into a trend-defining zone.
+
+### Rule 2: Dynamic Leverage Scaling
+During "Fear" phases, **cap maximum trade size** at 25% of the standard "Greed" allocation. The data shows that while win rates are decent in Fear, the risk of catastrophic PnL volatility makes high leverage mathematically unsustainable.
+
+
